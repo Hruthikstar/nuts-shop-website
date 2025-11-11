@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Menu, X, ChevronDown, Package } from "lucide-react";
 // Use exact filename casing to match the asset on disk (ra-logo.PNG)
 import Logo from "../assets/ra-logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const products = [
@@ -13,6 +13,7 @@ const products = [
   { id: 5, name: "Dates", icon: "🌴", path: "/dates" },
   { id: 6, name: "Toys", icon: "🧸", path: "/toys" },
   { id: 7, name: "Dry Fruits", icon: "🍇", path: "/dry-fruits" },
+  { id: 8, name: "Chips", icon: "🍟", path: "/chips" },
 ];
 
 interface NavLink {
@@ -25,6 +26,7 @@ const Navbar = () => {
   const [isProductsOpen, setIsProductsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -214,20 +216,25 @@ const Navbar = () => {
                 </button>
                 
                 {isProductsOpen && (
-                  <div className="mt-2 mx-2 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="mt-2 mx-2 p-3 bg-slate-500 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 animate-in fade-in slide-in-from-top-2 duration-200">
                     <div className="grid grid-cols-3 gap-2">
+                     
                       {products.map((product) => (
                         <Link
-                          key={product.id}
-                          to={product.path}
-                          onClick={() => setIsProductsOpen(false)}
-                          className="flex flex-col items-center justify-center p-3 rounded-lg hover:bg-white dark:hover:bg-slate-700 transition-all duration-200 hover:shadow-sm"
-                        >
-                          <span className="text-2xl mb-1">{product.icon}</span>
-                          <span className="text-xs font-medium text-white dark:text-slate-300 text-center">
-                            {product.name}
-                          </span>
-                        </Link>
+  key={product.id}
+  to={product.path}
+  onClick={() => {
+    setIsProductsOpen(false);
+    setIsOpen(false); // 👈 close main mobile menu
+  }}
+  className="flex flex-col items-center justify-center p-3 rounded-lg hover:bg-white dark:hover:bg-slate-700 transition-all duration-200 hover:shadow-sm"
+>
+  <span className="text-2xl mb-1">{product.icon}</span>
+  <span className="text-xs font-medium text-white dark:text-slate-300 text-center">
+    {product.name}
+  </span>
+</Link>
+
                       ))}
                     </div>
                   </div>
